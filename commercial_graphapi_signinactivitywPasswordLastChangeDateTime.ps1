@@ -18,7 +18,7 @@ $ApiUrl = "https://graph.microsoft.com/v1.0/users?`$select=displayName,lastPassw
 
 $SigninLogProperties =@()
 $auditlog = Invoke-MgGraphRequest -Uri $ApiUrl -method get
-$checkformorelogs = $auditlogusers.'@odata.nextlink'
+$checkformorelogs = $auditlog.'@odata.nextlink'
 do
 {
     foreach ($item in $auditlog.value){
@@ -28,7 +28,7 @@ do
      $sidate = $item.signinactivity.lastSignInDateTime
      $nirq = $item.signinactivity.lastNonInteractiveSignInRequestId
      $nidate = $item.signinactivity.lastNonInteractiveSignInDateTime
-     $passchangeDateTime = $item.signinactivity.LastPasswordChangeDateTime
+     $passchangeDateTime = $item.LastPasswordChangeDateTime
      $SigninLogProperties += New-Object Object |
                                 Add-Member -NotePropertyName DisplayName -NotePropertyValue $dn -PassThru |
                                 Add-Member -NotePropertyName UserprincipalName -NotePropertyValue $upn -PassThru |
